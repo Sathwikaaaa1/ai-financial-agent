@@ -1,0 +1,24 @@
+# Orchestration & LLM
+langgraph
+langchain-ollama
+langchain-core
+
+# RAG & Database
+langchain-postgres
+pgvector
+psycopg2-binary
+sqlalchemy
+
+# Financial Data & UI
+yfinance
+streamlit
+plotly
+
+# Data Parsing (for your existing scripts)
+beautifulsoup4
+markdownify
+sec_edgar_downloader
+lxml
+
+# Environment
+python-dotenv

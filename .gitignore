@@ -1,0 +1,11 @@
+# Virtual environment folder
+venv/
+__pycache__/
+
+# Environment variables (secrets/API keys)
+.env
+
+# Large data folders (from Phase 2 data collection)
+html10k/
+mds/
+*.csv
