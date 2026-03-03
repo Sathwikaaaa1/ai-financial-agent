@@ -1,5 +1,5 @@
 # Virtual environment folder
-venv/
+.venv/
 __pycache__/
 
 # Environment variables (secrets/API keys)

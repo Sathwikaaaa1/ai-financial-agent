@@ -9,7 +9,7 @@ from sqlalchemy import create_engine, text
 # Configuration matching your .env and docker-compose
 CONNECTION_STRING = "postgresql+psycopg://admin:password@localhost:5432/financial_agent"
 COLLECTION_NAME = "sec_filings"
-DATA_FOLDER = "data_prep/mds" 
+DATA_FOLDER = "mds" 
 
 print("🔌 Initializing Embeddings Model...")
 # This will download a small, fast, local embedding model from HuggingFace

@@ -12,7 +12,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  # A GUI to see your data (Optional but helpful)
+  # A GUI to see your data
   pgadmin:
     image: dpage/pgadmin4
     environment:
