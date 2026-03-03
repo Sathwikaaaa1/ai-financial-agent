@@ -15,38 +15,41 @@ vector_store = PGVector(
     use_jsonb=True,
 )
 
-def test_query(query, ticker=None):
-    print(f"\n🔎 Query: '{query}' (Filter: {ticker if ticker else 'None'})")
-    print("-" * 50)
+def retrieve_sec_documents(query: str, ticker: str, k: int = 3) -> str:
+    """
+    Searches the database and RETURNS a string of text for the LLM to read.
+    """
+    print(f"\n🔎 RAG Search Triggered: '{query}' for {ticker.upper()}")
     
     try:
-        if ticker:
-            # Metadata filtering: ONLY search chunks where metadata {"ticker": "AAPL"}
-            results = vector_store.similarity_search_with_score(
-                query, 
-                k=3, # Return top 3 matches
-                filter={"ticker": ticker.upper()} 
-            )
-        else:
-            results = vector_store.similarity_search_with_score(query, k=3)
-            
+        # We search the database, strictly filtering by the requested ticker
+        results = vector_store.similarity_search(
+            query, 
+            k=k,
+            filter={"ticker": ticker.upper()} 
+        )
+        
         if not results:
-            print("❌ No results found. Is the database empty?")
-            return
+            return f"No SEC filing results found for {ticker}."
 
-        for i, (doc, score) in enumerate(results):
-            # PGVector usually returns L2 distance by default (Lower score = Better match)
-            print(f"📄 Result {i+1} (Score: {score:.4f})")
-            print(f"   Source: {doc.metadata.get('ticker')} | {doc.metadata.get('source')}")
-            print(f"   Content snippet: {doc.page_content[:200]}...") # Show first 200 chars
-            print("")
+        # We glue all the text chunks together into one massive string
+        formatted_results = []
+        for i, doc in enumerate(results):
+            formatted_results.append(f"--- Document {i+1} ---\n{doc.page_content}\n")
             
+        # We RETURN the string so the AI agent receives the text
+        return "\n".join(formatted_results)
+        
     except Exception as e:
-        print(f"❌ Error during search: {e}")
+        return f"Error during search: {e}"
+    
+##print(retrieve_sec_documents("What is the revenue growth?", "AAPL"))
 
+'''
 if __name__ == "__main__":
     # Test 1: General Concept Search across all companies
     test_query("What are the primary risk factors regarding supply chain?")
     
     # Test 2: Specific Company Search (Ensures we don't mix up Apple with Microsoft)
     test_query("What is the revenue growth?", ticker="AAPL")
+'''
