@@ -24,7 +24,7 @@ print("Initializing LLM and Tools...")
 tools = [get_stock_price, get_historical_prices, search_sec_filings]
 
 llm = ChatOllama(
-    model="llama3.2", # Change this if your cloud provider uses a different model name!
+    model="gpt-oss:20b-cloud",
     base_url=os.getenv("OLLAMA_BASE_URL"),
     headers={"Authorization": f"Bearer {os.getenv('OLLAMA_API_KEY')}"},
 )
